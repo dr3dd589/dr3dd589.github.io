@@ -1,0 +1,28 @@
+---
+layout: page
+title: Blogs
+---
+
+<section>
+     <form>
+      <button class="btn btn-categories btn-xs" type="submit" formaction="{{ "/archive" | prepend: site.baseurl | replace: '//', '/' }}">Years</button>
+      <button class="btn btn-categories btn-xs" type="submit" formaction="{{ "/posts-by-categories/" | prepend: site.baseurl | replace: '//', '/' }}">Categories</button>
+    </form><br>
+  {% for category in site.categories %}
+      <div class="col-md-12 content-panel articles">
+        <h3 id="{{ category | first }}-ref">{{ category | first }}</h3>
+        <ul>
+          {% for posts in category %}
+            {% for post in posts %}
+              <li><time>{{ post.date | date:"%d %b, %Y" }} - </time>
+                <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">
+                  {{ post.title }}
+                </a>
+              </li>
+            {% endfor %}
+          {% endfor %}
+
+        </ul>
+      </div>
+      {% endfor %}
+</section>

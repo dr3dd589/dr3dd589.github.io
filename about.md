@@ -1,0 +1,21 @@
+---
+layout: page
+title: About
+---
+
+<p>
+I am Saurabh, also known as 'dr3dd'. I am interested in Cyber-Security and open-source development. Currently, I am a UG student at <a href="https://www.iitr.ac.in/">Indian Institute of Technology (IIT) Roorkee</a>.
+</p>
+<p>
+My area of interest is Reversing, Cryptography, Binary Exploitation and Pen-testing.
+</p>
+<p>
+I am a member of <a href="https://infoseciitr.github.io/">InfoSecIITR</a> a Cyber-Security team of IIT Roorkee. I spend most of my time participating in various Capture the Flag events and hackathons with the team.
+</p>
+<p>
+I spend my free time watching Sci-Fi movies, writing writeups and contributing to open source projects.</p>
+
+<p>
+If you want to talk to me, feel free to email me  at <a href="mailto:skumar1@mt.iitr.ac.in">skumar1@mt.iitr.ac.in</a>.
+</p>
+
