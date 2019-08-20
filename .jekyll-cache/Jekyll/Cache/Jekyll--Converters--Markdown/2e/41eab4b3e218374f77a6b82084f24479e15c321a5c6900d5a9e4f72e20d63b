@@ -1,0 +1,119 @@
+I"�<p align="center">
+  <img src="https://cdn-images-1.medium.com/max/800/1*g5RBYeGe0VLB6t_ZsvO_wQ.png" /><br />
+  <h2>---- GSoC'19 Final Report  | OWASP Foundation ( Project- DefectDojo) ----</h2>
+</p>
+<p>DefectDojo is a security tool that automates application security vulnerability management. DefectDojo streamlines the application security testing process by offering features such as importing third-party security findings, merging and deduping, integration with Jira, templating, report generation and security metrics.
+This project target to implementing Scan2.0 And Writing Unittests for tools to ensure that they working correctly.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> - ORGANIZATION  | CATEGORY
+    - OWASP Foundation | defect dojo
+ - MENTORS
+    - Aaron Weaver
+ - STUDENT DETAILS
+    - Saurabh kumar
+    - saurabh.dakshana17@gmail.com
+</code></pre></div></div>
+<h3 id="implemented-scans-parsers">Implemented Scans Parsers</h3>
+<ul>
+  <li>Add Kiuwan scan Importer ………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1118">#1118</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Openscap scan Importer …………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1193">#1193</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Wapiti scan Importer ………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1206">#1206</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Cobalt.io scan Importer ………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1215">#1215</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Mozilla Observatory scan importer ……………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1226">#1226</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Whitesource Importer ………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1243">#1243</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Microfocus Webinspect Importer ……………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1268">#1268</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Wpscan Importer ……………………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1345">#1345</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Sslscan Importer …………………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1351">#1351</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unitest is done.</li>
+    </ul>
+  </li>
+  <li>Add Sslyze Scan Importer ………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1376">#1376</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Testssl Scan Importer ……………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1397">#1397</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="fixed-issues">Fixed issues</h3>
+<ul>
+  <li>Fix Kiuwan CWE issue …………………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1175">#1175</a> ] - merged</li>
+  <li>Fix Repo field …………………………………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1177">#1177</a> ] - merged</li>
+  <li>Add cve option in findings …………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1106">#1106</a> ] - merged</li>
+  <li>fix product grading ……………………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1082">#1082</a> ] - merged</li>
+  <li>fix static and dynamic type finding …………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1050">#1050</a> ] - merged</li>
+  <li>Fix markdown_render function ……………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1049">#1049</a> ] - merged</li>
+  <li>Fix #1257 and Unicode error in Contrast importer [ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1260">#1260</a> ] - merged</li>
+  <li>fix ssllabs scanner issue if suites not provided [ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1367">#1367</a> ] - merged</li>
+  <li>fix status column to show under review option ………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1373">#1373</a> ] - merged</li>
+  <li>Veracode fix static and dynamic issue ……………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1377">#1377</a> ] - merged</li>
+  <li>Include tags in reports …………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1400">#1400</a> ] - merged</li>
+  <li>Fix user edit form to remove products ……………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1420">#1420</a> ] - merged</li>
+  <li>Add current commit hash in footer ………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1440">#1440</a> ] - merged</li>
+  <li>Fix Dependency parser ………………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1455">#1455</a> ] - merged</li>
+</ul>
+
+<h3 id="implemented-unittests">Implemented Unittests</h3>
+<ul>
+  <li>Add product type Unittests …………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1153">#1153</a> ]  - merged</li>
+  <li>Add Engagement Unittests ………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1170">#1170</a> ]  - merged</li>
+  <li>Add Environment Unittests ……………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1181">#1181</a> ]  - merged</li>
+</ul>
+
+<h3 id="todos">Todos</h3>
+<ul>
+  <li>Add new image and select from existing images inside the finding editor     - [ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1354">#1354</a> ]</li>
+  <li>API v2: Add ability to deal with findings through tags - [ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1340">#1340</a> ]</li>
+  <li>Fix permission handling of users.</li>
+  <li></li>
+</ul>
+
+:ET

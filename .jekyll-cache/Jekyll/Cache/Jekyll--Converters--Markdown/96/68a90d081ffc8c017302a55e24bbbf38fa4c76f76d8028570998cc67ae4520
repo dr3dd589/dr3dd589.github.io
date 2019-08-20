@@ -1,0 +1,7 @@
+I"…<p align="center">
+  <img src="https://cdn-images-1.medium.com/max/800/1*g5RBYeGe0VLB6t_ZsvO_wQ.png" /><br />
+  <h2>---- GSoC'19 Final Report  | OWASP Foundation ( Project- DefectDojo) ----</h2>
+</p>
+<p>DefectDojo is a security tool that automates application security vulnerability management. DefectDojo streamlines the application security testing process by offering features such as importing third-party security findings, merging and deduping, integration with Jira, templating, report generation and security metrics.
+This project target to implementing Scan2.0 And Writing Unittests for tools to ensure that they working correctly.</p>
+:ET

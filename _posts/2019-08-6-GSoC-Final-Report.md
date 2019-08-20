@@ -81,6 +81,11 @@ This project target to implementing Scan2.0 And Writing Unittests for tools to e
  - Fix user edit form to remove products .................................[ [#1420][Ad23] ] - merged
  - Add current commit hash in footer .............................................[ [#1440][Ad24] ] - merged
  - Fix Dependency parser .................................................................................[ [#1455][Ad25] ] - merged
+ - Fix clair klar importer ...........................................................................[ [#1459][Ad31] ] - merged
+ - Immuniweb fix ValueError...........................................................................[ [#1477][Ad32] ] - merged
+ - Add cve to Crashtest + dawnscanner findings ...............[ [#1480][Ad33] ] - merged
+ - fix release mode git commit showing issue .....................[ [#1483][Ad34] ] - merged
+ - fix menu overlapping ....................................................................................[ [#1493][Ad35] ] - merged
  
 ### Implemented Unittests
  - Add product type Unittests ..................................................................[ [#1153][Ad26] ]  - merged
@@ -123,4 +128,9 @@ This project target to implementing Scan2.0 And Writing Unittests for tools to e
    [Ad28]: <https://github.com/DefectDojo/django-DefectDojo/pull/1181>
    [Ad29]: <https://github.com/DefectDojo/django-DefectDojo/pull/1354>
    [Ad30]: <https://github.com/DefectDojo/django-DefectDojo/pull/1340>
+   [Ad31]: <https://github.com/DefectDojo/django-DefectDojo/pull/1459>
+   [Ad32]: <https://github.com/DefectDojo/django-DefectDojo/pull/1477>
+   [Ad33]: <https://github.com/DefectDojo/django-DefectDojo/pull/1480>
+   [Ad34]: <https://github.com/DefectDojo/django-DefectDojo/pull/1483>
+   [Ad35]: <https://github.com/DefectDojo/django-DefectDojo/pull/1493>
    
