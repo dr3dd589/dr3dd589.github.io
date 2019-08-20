@@ -20,7 +20,7 @@ tags:
   <h2>---- GSoC'19 Final Report  | OWASP Foundation ( Project- DefectDojo) ----</h2>
 </p>
 DefectDojo is a security tool that automates application security vulnerability management. DefectDojo streamlines the application security testing process by offering features such as importing third-party security findings, merging and deduping, integration with Jira, templating, report generation and security metrics.
-This project target to implementing Scan2.0 And Writing Unittests for tools to ensure that they working correctly.
+This project target to implementing Scan2.0 And Writing Unittests for tools to ensure that they are working correctly.
 
 ```
  - ORGANIZATION  | CATEGORY
@@ -94,7 +94,6 @@ This project target to implementing Scan2.0 And Writing Unittests for tools to e
 
 ### Todos
  - Add new image and select from existing images inside the finding editor     - [ [#1354][Ad29] ]
- - API v2: Add ability to deal with findings through tags - [ [#1340][Ad30] ]
  - Fix permission handling of users.
  - 
 
@@ -127,7 +126,6 @@ This project target to implementing Scan2.0 And Writing Unittests for tools to e
    [Ad27]: <https://github.com/DefectDojo/django-DefectDojo/pull/1170>
    [Ad28]: <https://github.com/DefectDojo/django-DefectDojo/pull/1181>
    [Ad29]: <https://github.com/DefectDojo/django-DefectDojo/pull/1354>
-   [Ad30]: <https://github.com/DefectDojo/django-DefectDojo/pull/1340>
    [Ad31]: <https://github.com/DefectDojo/django-DefectDojo/pull/1459>
    [Ad32]: <https://github.com/DefectDojo/django-DefectDojo/pull/1477>
    [Ad33]: <https://github.com/DefectDojo/django-DefectDojo/pull/1480>
