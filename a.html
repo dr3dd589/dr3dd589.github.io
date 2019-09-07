@@ -1,0 +1,26 @@
+<html>
+<head>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script language="javascript">
+        function cancelClicked() {
+            // function below will run clear.php?h=michael
+            $.ajax({
+                type: "GET",
+                url: "https://downloader-v1.dctfq19.def.camp/flag.php" ,
+                data: {},
+                success : function() { 
+
+                    // here is the code that will run on client side after running clear.php on server
+
+                    // function below reloads current page
+                    location.reload();
+
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <a id="cancel" href="#" onclick="cancelClicked()">Cancel</a>
+</body>
+</html>
