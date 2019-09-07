@@ -1,24 +1,22 @@
 <html>
 <head>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script language="javascript">
-        function cancelClicked() {
-            // function below will run clear.php?h=michael
-            $.ajax({
-                type: "GET",
-                url: "https://downloader-v1.dctfq19.def.camp/flag.php" ,
-                data: {},
-                success : function() { 
+    <script> 
+    // Requiring fs module in which 
+    // readFile function is defined. 
+    const fs = require('fs') 
 
-                    // here is the code that will run on client side after running clear.php on server
-
-                    // function below reloads current page
-                    location.reload();
-
-                }
-            });
-        }
-    </script>
+    // Reading data in utf-8 format 
+    // which is a type of character set. 
+    // Instead of 'utf-8' it can be  
+    // other character set also like 'ascii' 
+    fs.readFile('../../flag.php', 'utf-8', (err, data) => { 
+        if (err) throw err;
+        // Converting Raw Buffer to text 
+        // data using tostring function. 
+        console.log(data); 
+    }) 
+</script> 
 </head>
 <body>
     <a id="cancel" href="#" onclick="cancelClicked()">Cancel</a>
