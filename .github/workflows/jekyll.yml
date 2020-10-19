@@ -17,4 +17,4 @@ jobs:
       run: |
         docker run \
         -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-        jekyll/builder:latest /bin/bash -c "gem install jekyll bundler && chmod 777 /srv/jekyll && bundle exec jekyll serve"
+        jekyll/builder:latest /bin/bash -c "gem -v && ruby -v && gem install jekyll bundler && chmod 777 /srv/jekyll && bundle exec jekyll serve --livereload"
