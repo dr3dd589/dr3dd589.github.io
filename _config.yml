@@ -3,7 +3,7 @@ description: "my-blog"
 author:
   name: "dr3dd"
   email: "saurabh.dakshana17@gmail.com"
-  url: "http://dr3dd.me"
+  url: "https://dr3dd.live"
 
 baseurl: /
 
@@ -59,3 +59,6 @@ exclude:
   - vendor/gems/
   - vendor/ruby/
   - any_additional_item
+
+collections:
+  protected:

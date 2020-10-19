@@ -1,0 +1,23 @@
+{
+  "name": "dr3dd589.github.io",
+  "version": "1.0.0",
+  "description": "dr3dd.me [a](/a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a//a/a/a/a/a/a/a/a/a/a/a/a/)",
+  "main": "gulpfile.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp-util": "^3.0.8"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dr3dd589/dr3dd589.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dr3dd589/dr3dd589.github.io/issues"
+  },
+  "homepage": "https://github.com/dr3dd589/dr3dd589.github.io#readme"
+}
