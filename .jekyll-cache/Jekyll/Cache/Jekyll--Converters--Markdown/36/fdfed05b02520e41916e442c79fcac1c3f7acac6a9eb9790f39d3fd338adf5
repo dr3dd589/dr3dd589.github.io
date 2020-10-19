@@ -1,0 +1,24 @@
+I"	<p>I found this bug in Razer Cortex Service ( <code class="highlighter-rouge">RzKLService.exe</code> ).By default <code class="highlighter-rouge">RzKLService.exe</code> this runs with system privileges, and it executes <code class="highlighter-rouge">RazerCortex.exe</code> with administrator privileges but the way its load this exe i.e <code class="highlighter-rouge">RazerCortex.exe</code> is vulnerable to <code class="highlighter-rouge">Unquoted Search path Vulnerability</code>. So any attacker to can executes its binary which is places in these two places:-
+<code class="highlighter-rouge">C:\Program.exe</code> and <code class="highlighter-rouge">C:\Program Files (x86)\Razer\Razer.exe</code> which is not present. So if an attacker places their malicious binary at this place, then whenever the  user logged in it, attacker binary executes with administrator privilege.</p>
+
+<h3 id="root-cause-of-this-vulnerability">Root Cause of this Vulnerability</h3>
+
+<p>On Reversing <code class="highlighter-rouge">RzKLService.exe</code> i found that it excutes <code class="highlighter-rouge">RazerCortex.exe</code> after concating <code class="highlighter-rouge">-systray</code> in <code class="highlighter-rouge">RazerCortex.exe</code> path. So final path becomes
+<code class="highlighter-rouge">C:\Program Files (x86)\Razer\Razer Cortex\RazerCortex.exe -systray</code> there is no quotes between path and arguments. and that’s why it’s happening.</p>
+
+<p>Vulnerable code -</p>
+
+<pre><code class="language-C">  print_log((int)L"Run main processex[0] %s %s", path_ptr, v33);
+  sub_402FA0((void **)&amp;v34, L"RazerCortex.exe");
+  LOBYTE(v37) = 10;
+  cancat((int)&amp;path_ptr, (int)L" %s", v33);
+</code></pre>
+<p>Above code is Ida reverse c-code. <br />
+here v33 = <code class="highlighter-rouge">-systray</code> <br />
+path_ptr = <code class="highlighter-rouge">C:\Program Files (x86)\Razer\Razer Cortex\RazerCortex.exe</code></p>
+
+<p>Reported on Hackerone, link is below :<br />
+<a href="https://hackerone.com/reports/769684">Razer-hackerone-report</a><br />
+Similar bug reference :-
+<a href="https://hackerone.com/redirect?url=https%3A%2F%2Fsafebreach.com%2FPost%2FMaxthon-Browser-for-Windows-Unquoted-Search-Path-and-Potential-Abuses-CVE-2019-16647">Safebreach-Windows-Unquoted-Search-Path-CVE-2019-16647</a></p>
+:ET

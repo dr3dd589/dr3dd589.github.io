@@ -1,0 +1,185 @@
+I"W<h2>n00b19CTF(Easy-Flipp, 100 pt)</h2>
+
+<p>This is simple crypto challenge created by me. At the time of CTF, this challenge had zero solved. So, I thought to write a writeup for beginners to understand how CBC bit flipping works.</p>
+
+<p><strong>AES-CBC Encryption and Decryption flow chart</strong></p>
+
+<p><img src="/favicon/902px-CBC_encryption.svg.jpg" alt="alt text" /></p>
+
+<p><img src="/favicon/902px-CBC_decryption.svg.jpg" alt="alt text" /></p>
+
+<p>The main vulnerable part of CBC is it uses previous block ciphertext to encrypt next block of plaintext!!! same as in decryption second block ciphertext after decrypted by AES it XORed with previous block ciphertext!! So think about it what happens if we changed some bits of the previous block ciphertext!! Obviously, next block plaintext has been changed!! Easy ha!!! let’s do it practically.!!!</p>
+
+<p><strong>Now come to the challange..!!</strong><br />
+<code class="highlighter-rouge">Hosted on : nc noob.bckdr.in 10006</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">Crypto.Cipher</span> <span class="kn">import</span> <span class="n">AES</span>
+<span class="kn">from</span> <span class="nn">Crypto.Util.Padding</span> <span class="kn">import</span> <span class="n">pad</span><span class="p">,</span><span class="n">unpad</span>
+<span class="kn">from</span> <span class="nn">Crypto.Random</span> <span class="kn">import</span> <span class="n">get_random_bytes</span>
+
+<span class="n">greeting</span> <span class="o">=</span> <span class="s">"""
+
+         ___    ___   _        ___  _____   ___      _   ___  
+ _ __   / _ </span><span class="err">\</span><span class="s">  / _ </span><span class="err">\</span><span class="s"> | |__    / __</span><span class="err">\</span><span class="s">/__   </span><span class="err">\</span><span class="s"> / __</span><span class="err">\</span><span class="s">    / | / _ </span><span class="err">\</span><span class="s"> 
+| '_ </span><span class="err">\</span><span class="s"> | | | || | | || '_ </span><span class="err">\</span><span class="s">  / /     / /</span><span class="err">\</span><span class="s">// _</span><span class="err">\</span><span class="s">_____ | || (_) |
+| | | || |_| || |_| || |_) |/ /___  / /  / / |_____|| | </span><span class="err">\</span><span class="s">__, |
+|_| |_| </span><span class="err">\</span><span class="s">___/  </span><span class="err">\</span><span class="s">___/ |_.__/ </span><span class="err">\</span><span class="s">____/  </span><span class="err">\</span><span class="s">/   </span><span class="err">\</span><span class="s">/         |_|   /_/ 
+                                                              
+
+"""</span>
+
+<span class="n">key</span> <span class="o">=</span> <span class="n">get_random_bytes</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">iv</span> <span class="o">=</span> <span class="n">get_random_bytes</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="n">flag</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'flag'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">encrypt_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_CBC</span><span class="p">,</span><span class="n">iv</span><span class="p">)</span>
+    <span class="n">enc</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">pad</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="n">style</span><span class="o">=</span><span class="s">'pkcs7'</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">enc</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'hex'</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">decrypt_data</span><span class="p">(</span><span class="n">encryptedParams</span><span class="p">):</span>
+    <span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_CBC</span><span class="p">,</span><span class="n">iv</span><span class="p">)</span>
+    <span class="n">paddedParams</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">encryptedParams</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'hex'</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">unpad</span><span class="p">(</span><span class="n">paddedParams</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="n">style</span><span class="o">=</span><span class="s">'pkcs7'</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">greeting</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'hey n00b!! you know how CBC bit flipping works?</span><span class="se">\n</span><span class="s">If you flip the bit correctly i will reward you fl4g!'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+<span class="n">msg</span> <span class="o">=</span> <span class="s">"admin=0"</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Current Auth Message is : "</span> <span class="o">+</span> <span class="n">msg</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Encryption of auth Message in hex : "</span> <span class="o">+</span> <span class="n">iv</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'hex'</span><span class="p">)</span> <span class="o">+</span> <span class="n">encrypt_data</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>
+<span class="n">enc_msg</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s">"Give me Encrypted msg in hex : "</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">final_dec_msg</span> <span class="o">=</span> <span class="n">decrypt_data</span><span class="p">(</span><span class="n">enc_msg</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s">"admin=1"</span> <span class="ow">in</span> <span class="n">final_dec_msg</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Whoa!! you got it!! Now its reward time!!'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Try again you can do it!!'</span><span class="p">)</span>
+        <span class="nb">exit</span><span class="p">()</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'bye bye!!'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><br />
+We can see there is two function encrypt_data() and decrypt_data(). encrypt_data() take a message, randomly genrated key and iv and encrypt it.In CBC encryption and decryption for first block there is no previous block so at that time iv is used.
+<br /></p>
+
+<p>Here message is :  <code class="highlighter-rouge">admin=0</code><br />
+Block size is   :  <code class="highlighter-rouge">16</code><br />
+After pkcs7 padding message becomes : <code class="highlighter-rouge">admin=0\t\t\t\t\t\t\t\t\t</code><br /> here we added <code class="highlighter-rouge">\t</code> 9 times because <code class="highlighter-rouge">len('admin=0') = 7</code> 
+and <code class="highlighter-rouge">16-7 = 9</code> so <code class="highlighter-rouge">chr(9)*9 = "\t\t\t\t\t\t\t\t\t"</code><br /><br />
+Our target is to change the encrypted data so that after decryption message becomes : <code class="highlighter-rouge">admin=1</code></p>
+
+<p><strong>lets run the challenge</strong></p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+ ~/ctf-2018/n00bctf18/Easy-Flipp<span class="nv">$ </span>nc noob.bckdr.in 10006  
+
+
+         ___    ___   _        ___  _____   ___      _   ___  
+ _ __   / _ <span class="se">\ </span> / _ <span class="se">\ </span>| |__    / __<span class="se">\/</span>__   <span class="se">\ </span>/ __<span class="se">\ </span>   / | / _ <span class="se">\ </span>
+| <span class="s1">'_ \ | | | || | | || '</span>_ <span class="se">\ </span> / /     / /<span class="se">\/</span>/ _<span class="se">\_</span>____ | <span class="o">||</span> <span class="o">(</span>_<span class="o">)</span> |
+| | | <span class="o">||</span> |_| <span class="o">||</span> |_| <span class="o">||</span> |_<span class="o">)</span> |/ /___  / /  / / |_____|| | <span class="se">\_</span>_, |
+|_| |_| <span class="se">\_</span>__/  <span class="se">\_</span>__/ |_.__/ <span class="se">\_</span>___/  <span class="se">\/</span>   <span class="se">\/</span>         |_|   /_/ 
+                                                              
+
+
+hey n00b!! you know how CBC bit flipping works?
+If you flip the bit correctly i will reward you fl4g!
+                                                                                                            
+ _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _ 
+<span class="o">(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)</span>
+
+Current Auth Message is : <span class="nv">admin</span><span class="o">=</span>0
+Encryption of auth Message <span class="k">in </span>hex : fefbc34b8c1ec3f371f37ab5378e0e212f3ffd012a824cd16ffe8030d8bcd963
+Give me Encrypted msg <span class="k">in </span>hex : 
+</code></pre></div></div>
+<p><br />
+The output encrypted message in hex and its length is 32 bytes.Let’s check it for this i use ipython!!</p>
+
+<div class="language-s highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span><span class="w"> </span><span class="p">[</span><span class="m">4</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"fefbc34b8c1ec3f371f37ab5378e0e212f3ffd012a824cd16ffe8030d8bcd963"</span><span class="n">.decode</span><span class="p">(</span><span class="s1">'hex'</span><span class="p">)</span><span class="w">
+
+</span><span class="n">In</span><span class="w"> </span><span class="p">[</span><span class="m">5</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w">
+</span><span class="n">Out</span><span class="p">[</span><span class="m">5</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="m">32</span><span class="w">
+
+</span></code></pre></div></div>
+
+<p>In CTF we did not given the challenge file to participants because its easy though!!!
+So by it’s length we can know it is sum of <code class="highlighter-rouge">iv(16 bites)</code> and <code class="highlighter-rouge">message(16 bites)</code> in hex.!!</p>
+
+<div class="language-s highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span><span class="w"> </span><span class="p">[</span><span class="m">4</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"fefbc34b8c1ec3f371f37ab5378e0e212f3ffd012a824cd16ffe8030d8bcd963"</span><span class="n">.decode</span><span class="p">(</span><span class="s1">'hex'</span><span class="p">)</span><span class="w">
+
+</span><span class="n">In</span><span class="w"> </span><span class="p">[</span><span class="m">5</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w">
+</span><span class="n">Out</span><span class="p">[</span><span class="m">5</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="m">32</span><span class="w">
+
+</span><span class="n">In</span><span class="w"> </span><span class="p">[</span><span class="m">6</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="o">:</span><span class="m">16</span><span class="p">]</span><span class="w">
+</span><span class="n">Out</span><span class="p">[</span><span class="m">6</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="s1">'\xfe\xfb\xc3K\x8c\x1e\xc3\xf3q\xf3z\xb57\x8e\x0e!'</span><span class="w">
+
+</span><span class="n">In</span><span class="w"> </span><span class="p">[</span><span class="m">7</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="m">16</span><span class="o">:</span><span class="p">]</span><span class="w">
+</span><span class="n">Out</span><span class="p">[</span><span class="m">7</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="s1">'/?\xfd\x01*\x82L\xd1o\xfe\x800\xd8\xbc\xd9c'</span><span class="w">
+</span></code></pre></div></div>
+
+<p>So here first block is iv : <code class="highlighter-rouge">\xfe\xfb\xc3K\x8c\x1e\xc3\xf3q\xf3z\xb57\x8e\x0e!</code><br />
+Second block is padded encrypted message : <code class="highlighter-rouge">/?\xfd\x01*\x82L\xd1o\xfe\x800\xd8\xbc\xd9c</code></p>
+
+<p>Index of byte we have to change in message(<code class="highlighter-rouge">admin=0</code>) is : 6<br /></p>
+
+<p>Normaly what happening in decryption function is it’s decrypt the data with standerd 
+<code class="highlighter-rouge">AES(/?\xfd\x01*\x82L\xd1o\xfe\x800\xd8\xbc\xd9c,key)</code> and <code class="highlighter-rouge">XORed</code> with previous block in this case it is <code class="highlighter-rouge">iv</code>.</p>
+
+<p><code class="highlighter-rouge">So if we change the byte which has index 6 in iv so that after xoring it make '1' not '0' in message</code><br /> 
+<code class="highlighter-rouge">then we can get the flag.!!</code></p>
+
+<p>Initialy in decryption : <code class="highlighter-rouge">iv[6] ^ Dec_AES(message[6]) = '0'</code><br />
+We want <code class="highlighter-rouge">1</code> So xoring both side with <code class="highlighter-rouge">1</code> : <code class="highlighter-rouge">(iv[6]^1)^Dec_AES(message[6]) = '0^1'</code><br />
+which is :  <code class="highlighter-rouge">(iv[6]^1)^Dec_AES(message[6]) = '1'</code></p>
+
+<p>So what we have to do is just xor char of iv which has index 6 with 1 and after encode in hex and send it.!! let’s do it..!!</p>
+
+<div class="language-s highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span><span class="w"> </span><span class="p">[</span><span class="m">13</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"fefbc34b8c1ec3f371f37ab5378e0e212f3ffd012a824cd16ffe8030d8bcd963"</span><span class="n">.decode</span><span class="p">(</span><span class="s1">'hex'</span><span class="p">)</span><span class="w">
+
+</span><span class="n">In</span><span class="w"> </span><span class="p">[</span><span class="m">14</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="m">6</span><span class="p">]</span><span class="w">
+</span><span class="n">Out</span><span class="p">[</span><span class="m">14</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="s1">'\xc3'</span><span class="w">
+
+</span><span class="n">In</span><span class="w"> </span><span class="p">[</span><span class="m">15</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">chr</span><span class="p">(</span><span class="n">ord</span><span class="p">(</span><span class="s1">'\xc3'</span><span class="p">)</span><span class="o">^</span><span class="m">1</span><span class="p">)</span><span class="w">
+</span><span class="n">Out</span><span class="p">[</span><span class="m">15</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="s1">'\xc2'</span><span class="w">
+
+</span><span class="n">In</span><span class="w"> </span><span class="p">[</span><span class="m">16</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="o">:</span><span class="m">6</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">'\xc2'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="m">7</span><span class="o">:</span><span class="p">]</span><span class="w">
+
+</span><span class="n">In</span><span class="w"> </span><span class="p">[</span><span class="m">17</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="n">a.encode</span><span class="p">(</span><span class="s1">'hex'</span><span class="p">)</span><span class="w">
+</span><span class="n">Out</span><span class="p">[</span><span class="m">17</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="s1">'fefbc34b8c1ec2f371f37ab5378e0e212f3ffd012a824cd16ffe8030d8bcd963'</span><span class="w">
+
+</span></code></pre></div></div>
+<p><strong>Lets See what happen if we send this changed encrypted data:</strong></p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ~/ctf-2018/n00bctf18/Easy-Flipp<span class="nv">$ </span>nc noob.bckdr.in 10006  
+
+
+         ___    ___   _        ___  _____   ___      _   ___  
+ _ __   / _ <span class="se">\ </span> / _ <span class="se">\ </span>| |__    / __<span class="se">\/</span>__   <span class="se">\ </span>/ __<span class="se">\ </span>   / | / _ <span class="se">\ </span>
+| <span class="s1">'_ \ | | | || | | || '</span>_ <span class="se">\ </span> / /     / /<span class="se">\/</span>/ _<span class="se">\_</span>____ | <span class="o">||</span> <span class="o">(</span>_<span class="o">)</span> |
+| | | <span class="o">||</span> |_| <span class="o">||</span> |_| <span class="o">||</span> |_<span class="o">)</span> |/ /___  / /  / / |_____|| | <span class="se">\_</span>_, |
+|_| |_| <span class="se">\_</span>__/  <span class="se">\_</span>__/ |_.__/ <span class="se">\_</span>___/  <span class="se">\/</span>   <span class="se">\/</span>         |_|   /_/ 
+                                                              
+
+
+hey n00b!! you know how CBC bit flipping works?
+If you flip the bit correctly i will reward you fl4g!
+                                                                                                            
+ _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _ 
+<span class="o">(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)(</span>_<span class="o">)</span>
+
+Current Auth Message is : <span class="nv">admin</span><span class="o">=</span>0
+Encryption of auth Message <span class="k">in </span>hex : fefbc34b8c1ec3f371f37ab5378e0e212f3ffd012a824cd16ffe8030d8bcd963
+Give me Encrypted msg <span class="k">in </span>hex : fefbc34b8c1ec2f371f37ab5378e0e212f3ffd012a824cd16ffe8030d8bcd963
+
+Whoa!! you got it!! Now its reward <span class="nb">time</span><span class="o">!!</span>
+CTF<span class="o">{</span>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p><em><code class="highlighter-rouge">flag is redacted because its hosted on backdoor server!!!</code></em></p>
+:ET

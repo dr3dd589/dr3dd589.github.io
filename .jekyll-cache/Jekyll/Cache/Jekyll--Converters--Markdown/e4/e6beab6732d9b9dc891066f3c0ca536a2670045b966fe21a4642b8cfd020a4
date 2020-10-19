@@ -1,0 +1,3 @@
+I"¯<h2>TUCTF18(Shelleasy, 345 pt)</h2>
+<p>In this challange we have to overwrite variable to 0xdeadbeef and after that inject 32 bit shellcode to stack thats it.<br /><br /></p>
+:ET
