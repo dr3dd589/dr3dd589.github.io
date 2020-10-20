@@ -13,8 +13,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build the site in the jekyll/builder container
-      run: |
-        docker run \
-        -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-        jekyll/builder:latest /bin/bash -c "bundle install --path vendor --full-index && chmod 777 /srv/jekyll && bundle config force_ruby_platform true && bundle exec jekyll build --trace"
+    - name: Deploy
+      run: "bundle exec jekyll build -d _site/"
