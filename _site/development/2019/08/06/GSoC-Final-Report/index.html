@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <meta name="generator" content="Jekyll">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/favicon/site.webmanifest">
+  <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
+
+  <title>GSoC'19 Final Report  | OWASP Foundation</title>
+
+  <link rel="stylesheet" href="/css/main.css">
+  
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5c03915b806598ee"></script>
+
+  
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" /> <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>GSoC’19 Final Report OWASP Foundation | dr3dd</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="GSoC’19 Final Report OWASP Foundation" />
+<meta name="author" content="dr3dd" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="---- GSoC&#39;19 Final Report | OWASP Foundation ( Project- DefectDojo) ---- DefectDojo is a security tool that automates application security vulnerability management. DefectDojo streamlines the application security testing process by offering features such as importing third-party security findings, merging and deduping, integration with Jira, templating, report generation and security metrics. This project target to implementing Scan2.0 And Writing Unittests for tools to ensure that they are working correctly." />
+<meta property="og:description" content="---- GSoC&#39;19 Final Report | OWASP Foundation ( Project- DefectDojo) ---- DefectDojo is a security tool that automates application security vulnerability management. DefectDojo streamlines the application security testing process by offering features such as importing third-party security findings, merging and deduping, integration with Jira, templating, report generation and security metrics. This project target to implementing Scan2.0 And Writing Unittests for tools to ensure that they are working correctly." />
+<meta property="og:site_name" content="dr3dd" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-08-06T17:01:19+05:30" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","url":"/development/2019/08/06/GSoC-Final-Report/","headline":"GSoC’19 Final Report OWASP Foundation","dateModified":"2019-08-06T17:01:19+05:30","datePublished":"2019-08-06T17:01:19+05:30","author":{"@type":"Person","name":"dr3dd"},"description":"---- GSoC&#39;19 Final Report | OWASP Foundation ( Project- DefectDojo) ---- DefectDojo is a security tool that automates application security vulnerability management. DefectDojo streamlines the application security testing process by offering features such as importing third-party security findings, merging and deduping, integration with Jira, templating, report generation and security metrics. This project target to implementing Scan2.0 And Writing Unittests for tools to ensure that they are working correctly.","mainEntityOfPage":{"@type":"WebPage","@id":"/development/2019/08/06/GSoC-Final-Report/"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header>
+  <div>
+    <a href="/">
+    
+    <h1>./dr3dd</h1>
+    </a>
+    <div class="header-links">
+      <h2>Cybersecurity Enthusiast</h2>
+      <a href="/archive"><h2 class="header-link">Blogs</h2></a>
+<a href="/about"><h2 class="header-link">About</h2></a>
+<a href="/favicon/resume.pdf"><h2 class="header-link">Resume</h2></a>
+<!-- <a href="/atom.xml"><h2 class="header-link">RSS</h2></a> -->
+    </div>
+  </div>
+</header>
+    <div class="container">
+      <section id="main_content">
+        
+
+<div class="container-fluid single">
+  <div class="row">
+
+    <div itemscope itemtype="http://schema.org/Article" class="col-md-12 article">
+      
+      <div class="thumb">
+        <i class="fa fa-book fa-4x"></i>
+      </div>
+      
+
+      <h1 class="header" itemprop="name">GSoC'19 Final Report  | OWASP Foundation</h1>
+
+      <div class="author">
+        <small><i>
+          
+          by
+          <span itemprop="author">
+            
+              <a rel="author" href="https://plus.google.com/u/0/115811810791350463594">
+            
+            <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+              <span itemprop="name">dr3dd</span>
+            </span>
+            
+              </a>
+            
+          </span>
+          
+          on <span itemprop="datePublished" content="2014-08-28">August 6, 2019</span>
+           under Development
+        </i></small>
+      </div>
+
+      <div class="read-time">
+        <small>
+          3 minute read
+        </small>
+      </div>
+
+      <div class="content-panel content">
+
+        
+
+        <span itemprop="articleBody"><p align="center">
+  <img src="https://cdn-images-1.medium.com/max/800/1*g5RBYeGe0VLB6t_ZsvO_wQ.png" /><br />
+  <h2>---- GSoC'19 Final Report  | OWASP Foundation ( Project- DefectDojo) ----</h2>
+</p>
+<p>DefectDojo is a security tool that automates application security vulnerability management. DefectDojo streamlines the application security testing process by offering features such as importing third-party security findings, merging and deduping, integration with Jira, templating, report generation and security metrics.
+This project target to implementing Scan2.0 And Writing Unittests for tools to ensure that they are working correctly.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> - ORGANIZATION  | CATEGORY
+    - OWASP Foundation | defect dojo
+ - MENTORS
+    - Aaron Weaver
+ - STUDENT DETAILS
+    - Saurabh kumar
+    - saurabh.dakshana17@gmail.com
+</code></pre></div></div>
+<h3 id="implemented-scans-parsers">Implemented Scans Parsers</h3>
+<ul>
+  <li>Add Kiuwan scan Importer ………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1118">#1118</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Openscap scan Importer …………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1193">#1193</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Wapiti scan Importer ………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1206">#1206</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Cobalt.io scan Importer ………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1215">#1215</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Mozilla Observatory scan importer ……………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1226">#1226</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Whitesource Importer ………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1243">#1243</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Microfocus Webinspect Importer ……………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1268">#1268</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Wpscan Importer ……………………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1345">#1345</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Sslscan Importer …………………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1351">#1351</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unitest is done.</li>
+    </ul>
+  </li>
+  <li>Add Sslyze Scan Importer ………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1376">#1376</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+  <li>Add Testssl Scan Importer ……………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1397">#1397</a> ] - merged
+    <ul>
+      <li>Scan parser is done.</li>
+      <li>Unittest is done.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="fixed-issues">Fixed issues</h3>
+<ul>
+  <li>Fix Kiuwan CWE issue …………………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1175">#1175</a> ] - merged</li>
+  <li>Fix Repo field …………………………………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1177">#1177</a> ] - merged</li>
+  <li>Add cve option in findings …………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1106">#1106</a> ] - merged</li>
+  <li>fix product grading ……………………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1082">#1082</a> ] - merged</li>
+  <li>fix static and dynamic type finding …………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1050">#1050</a> ] - merged</li>
+  <li>Fix markdown_render function ……………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1049">#1049</a> ] - merged</li>
+  <li>Fix #1257 and Unicode error in Contrast importer [ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1260">#1260</a> ] - merged</li>
+  <li>fix ssllabs scanner issue if suites not provided [ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1367">#1367</a> ] - merged</li>
+  <li>fix status column to show under review option ………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1373">#1373</a> ] - merged</li>
+  <li>Veracode fix static and dynamic issue ……………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1377">#1377</a> ] - merged</li>
+  <li>Include tags in reports …………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1400">#1400</a> ] - merged</li>
+  <li>Fix user edit form to remove products ……………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1420">#1420</a> ] - merged</li>
+  <li>Add current commit hash in footer ………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1440">#1440</a> ] - merged</li>
+  <li>Fix Dependency parser ………………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1455">#1455</a> ] - merged</li>
+  <li>Fix clair klar importer …………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1459">#1459</a> ] - merged</li>
+  <li>Immuniweb fix ValueError…………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1477">#1477</a> ] - merged</li>
+  <li>Add cve to Crashtest + dawnscanner findings ……………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1480">#1480</a> ] - merged</li>
+  <li>fix release mode git commit showing issue …………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1483">#1483</a> ] - merged</li>
+  <li>fix menu overlapping …………………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1493">#1493</a> ] - merged</li>
+</ul>
+
+<h3 id="implemented-unittests">Implemented Unittests</h3>
+<ul>
+  <li>Add product type Unittests …………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1153">#1153</a> ]  - merged</li>
+  <li>Add Engagement Unittests ………………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1170">#1170</a> ]  - merged</li>
+  <li>Add Environment Unittests ……………………………………………………………[ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1181">#1181</a> ]  - merged</li>
+</ul>
+
+<h3 id="todos">Todos</h3>
+<ul>
+  <li>Add new image and select from existing images inside the finding editor     - [ <a href="https://github.com/DefectDojo/django-DefectDojo/pull/1354">#1354</a> ]</li>
+  <li>Fix permission handling of users.</li>
+  <li></li>
+</ul>
+
+</span>
+
+        
+
+        
+        <div class="share">
+          <!-- Go to www.addthis.com/dashboard to customize your tools -->
+          <div class="addthis_sharing_toolbox"></div>
+        </div>
+        
+
+        
+        <div class="tags">
+          <small>
+          <i class="fa fa-tags"></i>
+            Google Summer of code 2019, OWASP, DefectDojo, Opensource, python, Django
+          </small>
+        </div>
+        
+
+      </div>
+
+      
+      <div class="content-panel feedback">
+        I <i class="fa fa-heart"></i> feedback.<br />
+        Let me know what you think of this article on twitter <a href="http://www.twitter.com/_dr3dd_">@_dr3dd_</a> or leave a comment below!
+      </div>
+      
+
+      
+      <div class="content-panel comments">
+        <div id="disqus_thread">
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      </div>
+      
+
+      
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script type="text/javascript">
+/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+function disqus_config() { this.experiment.enable_scroll_container = true; }
+var disqus_shortname = "dr3dd"; // required: replace example with your forum shortname
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+
+
+      </section>
+    </div>
+  </div>
+
+   <footer>
+  <a href="http://dr3dd.me">
+    <span>
+        <b>dr3dd</b>
+    </span>
+    
+    <span>© 2020</span>
+  </a>
+</footer>
+
+  
+    <script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-20365477-4', 'auto');
+  ga('send', 'pageview');
+</script>
+  
+</body>
+
+</html>

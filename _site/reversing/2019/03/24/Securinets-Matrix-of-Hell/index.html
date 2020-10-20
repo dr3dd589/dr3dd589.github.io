@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <meta name="generator" content="Jekyll">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/favicon/site.webmanifest">
+  <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
+
+  <title>Matrix of Hell</title>
+
+  <link rel="stylesheet" href="/css/main.css">
+  
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5c03915b806598ee"></script>
+
+  
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" /> <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Matrix of Hell | dr3dd</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Matrix of Hell" />
+<meta name="author" content="dr3dd" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Securinets-CTF-2019(Matrix of Hell, 992 pt)" />
+<meta property="og:description" content="Securinets-CTF-2019(Matrix of Hell, 992 pt)" />
+<meta property="og:site_name" content="dr3dd" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-03-24T17:01:19+05:30" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","url":"/reversing/2019/03/24/Securinets-Matrix-of-Hell/","headline":"Matrix of Hell","dateModified":"2019-03-24T17:01:19+05:30","datePublished":"2019-03-24T17:01:19+05:30","author":{"@type":"Person","name":"dr3dd"},"description":"Securinets-CTF-2019(Matrix of Hell, 992 pt)","mainEntityOfPage":{"@type":"WebPage","@id":"/reversing/2019/03/24/Securinets-Matrix-of-Hell/"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header>
+  <div>
+    <a href="/">
+    
+    <h1>./dr3dd</h1>
+    </a>
+    <div class="header-links">
+      <h2>Cybersecurity Enthusiast</h2>
+      <a href="/archive"><h2 class="header-link">Blogs</h2></a>
+<a href="/about"><h2 class="header-link">About</h2></a>
+<a href="/favicon/resume.pdf"><h2 class="header-link">Resume</h2></a>
+<!-- <a href="/atom.xml"><h2 class="header-link">RSS</h2></a> -->
+    </div>
+  </div>
+</header>
+    <div class="container">
+      <section id="main_content">
+        
+
+<div class="container-fluid single">
+  <div class="row">
+
+    <div itemscope itemtype="http://schema.org/Article" class="col-md-12 article">
+      
+      <div class="thumb">
+        <i class="fa fa-book fa-4x"></i>
+      </div>
+      
+
+      <h1 class="header" itemprop="name">Matrix of Hell</h1>
+
+      <div class="author">
+        <small><i>
+          
+          by
+          <span itemprop="author">
+            
+              <a rel="author" href="https://plus.google.com/u/0/115811810791350463594">
+            
+            <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+              <span itemprop="name">dr3dd</span>
+            </span>
+            
+              </a>
+            
+          </span>
+          
+          on <span itemprop="datePublished" content="2014-08-28">March 24, 2019</span>
+           under Reversing
+        </i></small>
+      </div>
+
+      <div class="read-time">
+        <small>
+          7 minute read
+        </small>
+      </div>
+
+      <div class="content-panel content">
+
+        
+
+        <span itemprop="articleBody"><h2>Securinets-CTF-2019(Matrix of Hell, 992 pt)</h2>
+
+<p>An ELF stripped binary is provided. On running binary, it asked for a password which we have to find. It is more like crackme’s problems. So i opened it in my ida to do some static analysis. Renamed variables for easy understanding.</p>
+
+<p>There are main 3 step in <code class="highlighter-rouge">main</code> funtion:</p>
+
+<p>–&gt;binary generates some bytes using the below process and save it at <code class="highlighter-rouge">pass_cmp</code> local variable.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="n">v14</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+  <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span> <span class="p">)</span>
+    <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span> <span class="n">v14</span> <span class="o">==</span> <span class="mi">9</span> <span class="p">)</span>
+      <span class="p">{</span>
+        <span class="n">v14</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="o">--</span><span class="n">j</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">else</span>
+      <span class="p">{</span>
+        <span class="n">a2</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="p">)</span><span class="n">j</span><span class="p">;</span>
+        <span class="n">a3</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="p">)(</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">6LL</span> <span class="o">*</span> <span class="n">i</span><span class="p">));</span>
+        <span class="o">*</span><span class="p">(</span><span class="n">_DWORD</span> <span class="o">*</span><span class="p">)((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">pass_cmp</span> <span class="o">+</span> <span class="p">(</span><span class="n">_QWORD</span><span class="p">)</span><span class="n">a3</span><span class="p">)</span> <span class="o">=</span> <span class="n">v14</span><span class="o">++</span> <span class="o">+</span> <span class="mi">65</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+</code></pre></div></div>
+
+<p>I wrote it in python to generate that bytes.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="s">'?'</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">v3</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">v4</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+   <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+       <span class="k">if</span> <span class="n">v14</span><span class="o">==</span><span class="mi">9</span><span class="p">:</span>
+           <span class="n">v14</span><span class="o">=</span><span class="mi">10</span>
+           <span class="n">j</span> <span class="o">=</span> <span class="n">j</span><span class="o">-</span><span class="mi">1</span>
+       <span class="k">else</span><span class="p">:</span>
+           <span class="n">a3</span><span class="o">=</span> <span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">6</span><span class="o">*</span><span class="n">i</span><span class="p">)</span>
+           <span class="n">s</span><span class="p">[</span><span class="n">a3</span><span class="p">]</span><span class="o">=</span><span class="nb">chr</span><span class="p">(</span><span class="n">v14</span><span class="o">+</span><span class="mi">65</span><span class="p">)</span>
+       <span class="n">v14</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+
+<span class="n">output</span><span class="o">--&gt;</span> <span class="n">ABCDE</span><span class="err">?</span><span class="n">FGHI</span><span class="err">??</span><span class="n">LMNOP</span><span class="err">?</span><span class="n">QRSTU</span><span class="err">?</span><span class="n">VWXYZ</span><span class="err">????</span>           <span class="o">&lt;--</span> <span class="n">pass_cmp</span> 
+</code></pre></div></div>
+<p>–&gt; Now in Second step it checks the input length that is 14 and compare input bytes by bytes using matrix(5x5) the process in ida is like this:-</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="n">printf</span><span class="p">(</span><span class="s">"PASSWORD:"</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span><span class="p">);</span>
+  <span class="n">gets</span><span class="p">(</span><span class="n">password</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">strlen</span><span class="p">(</span><span class="n">password</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">14</span> <span class="o">||</span> <span class="p">(</span><span class="n">sub_83A</span><span class="p">(),</span> <span class="o">!</span><span class="n">v3</span><span class="p">)</span> <span class="p">)</span>   <span class="o">&lt;--</span> <span class="n">check</span> <span class="n">password</span> <span class="n">length</span>
+  <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"ACCESS DENIED"</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="n">v16</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">strlen</span><span class="p">(</span><span class="n">password</span><span class="p">);</span> <span class="o">++</span><span class="n">k</span> <span class="p">)</span>            <span class="o">&lt;--</span> <span class="n">iterate</span> <span class="n">password</span> <span class="n">byte</span> <span class="n">by</span> <span class="n">byte</span>
+  <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">l</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">;</span> <span class="o">++</span><span class="n">l</span> <span class="p">)</span>
+    <span class="p">{</span>
+      <span class="k">for</span> <span class="p">(</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">m</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">;</span> <span class="o">++</span><span class="n">m</span> <span class="p">)</span>
+      <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">pass_cmp</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">6LL</span> <span class="o">*</span> <span class="n">l</span><span class="p">]</span> <span class="o">==</span> <span class="n">password</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="p">)</span>   <span class="o">&lt;--</span> <span class="n">Compare</span> <span class="n">password</span> <span class="n">byte</span> <span class="n">at</span> <span class="n">k</span> <span class="n">index</span>
+                                                          <span class="n">with</span> <span class="n">above</span> <span class="n">output</span><span class="p">.</span> 
+        <span class="p">{</span>
+          <span class="n">new_string</span><span class="p">[</span><span class="n">v16</span><span class="p">]</span> <span class="o">=</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">65</span><span class="p">;</span>                   <span class="o">&lt;--</span> <span class="n">form</span> <span class="n">new</span> <span class="n">string</span>
+          <span class="n">v4</span> <span class="o">=</span> <span class="n">v16</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+          <span class="n">new_string</span><span class="p">[</span><span class="n">v4</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">49</span><span class="p">;</span>                    <span class="o">&lt;--</span> <span class="n">The</span> <span class="n">length</span> <span class="n">of</span> <span class="n">new</span> <span class="n">string</span> <span class="n">is</span> <span class="kt">double</span>
+                                                          <span class="n">of</span> <span class="n">password</span><span class="p">.</span>
+          <span class="n">v16</span> <span class="o">=</span> <span class="n">v4</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">for</span> <span class="p">(</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">strlen</span><span class="p">(</span><span class="n">new_string</span><span class="p">);</span> <span class="o">++</span><span class="n">n</span> <span class="p">)</span>
+    <span class="n">s2</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">^</span> <span class="n">new_string</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>                    <span class="o">&lt;--</span> <span class="n">doing</span> <span class="n">some</span> <span class="n">xor</span> <span class="n">operation</span> <span class="n">and</span> <span class="n">form</span> <span class="n">new</span> 
+                                                          <span class="n">string</span> <span class="n">s2</span>
+  <span class="nf">if</span> <span class="p">(</span> <span class="n">strcmp</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">)</span> <span class="p">)</span>                               <span class="o">&lt;--</span> <span class="n">cmp</span> <span class="n">s2</span> <span class="n">with</span> <span class="n">s1</span> <span class="n">and</span> <span class="n">s1</span> <span class="n">is</span> <span class="n">in</span> <span class="n">data</span> 
+                                                          <span class="n">section</span>
+  <span class="p">{</span>												                            <span class="o">&lt;--</span> <span class="n">s1</span> <span class="o">=</span> <span class="err">'</span><span class="n">B0C2A2C6A3A7C5</span><span class="err">@</span><span class="mi">6</span><span class="n">B5F0A4G2B5A2</span><span class="err">'</span>					
+    <span class="n">printf</span><span class="p">(</span><span class="s">"ACCESS DENIED"</span><span class="p">,</span> <span class="n">s2</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+  <span class="err">}</span>
+</code></pre></div></div>
+
+<p>first we have to recover the <code class="highlighter-rouge">new_string</code> from <code class="highlighter-rouge">s1</code> and this is very simple</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s1</span> <span class="o">=</span> <span class="s">"B0C2A2C6A3A7C5@6B5F0A4G2B5A2"</span>                   <span class="o">&lt;--</span> <span class="n">s1</span>
+<span class="n">new_string</span> <span class="o">=</span> <span class="s">""</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">28</span><span class="p">):</span>                                                     
+   <span class="n">new_string</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="mi">4</span><span class="o">^</span><span class="nb">ord</span><span class="p">(</span><span class="n">s1</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">output</span><span class="o">--&gt;</span> <span class="s">'B1A1A3A5A2C4C4B5B4D3A5E1B4C1'</span>              <span class="o">&lt;--</span> <span class="n">new_string</span>
+</code></pre></div></div>
+
+<p>Now we have to find out the co-ordinates of matrix (l,m) which is satisfied for this compare  <code class="highlighter-rouge">if ( pass_cmp[m + 6LL * l] == password[k] )</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="n">cord</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">l</span><span class="p">,</span><span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">-</span><span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="o">-</span><span class="nb">ord</span><span class="p">(</span><span class="s">'1'</span><span class="p">)</span>
+    <span class="n">cord</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">l</span><span class="p">,</span><span class="n">m</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">cord</span><span class="p">),</span>
+
+<span class="n">output</span><span class="o">--&gt;</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
+</code></pre></div></div>
+<p>We got the (l,m) value at which comparision is satisfied.Now we only have to recover the password.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="n">cord</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
+<span class="n">pass_cmp</span> <span class="o">=</span> <span class="s">'ABCDE?FGHI??LMNOP?QRSTU?VWXYZ????'</span>
+<span class="n">password</span> <span class="o">=</span> <span class="s">""</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cord</span><span class="p">)):</span>                    
+     <span class="n">password</span> <span class="o">+=</span> <span class="n">pass_cmp</span><span class="p">[</span><span class="n">cord</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">6</span><span class="o">*</span><span class="n">cord</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+
+<span class="n">output</span> <span class="o">--&gt;</span> <span class="s">'FACEBOO?ISEVIL'</span>                    <span class="o">&lt;--</span> <span class="n">one</span> <span class="n">byte</span> <span class="ow">is</span> <span class="n">missing</span> <span class="s">'?'</span> <span class="n">we</span> <span class="n">know</span> <span class="n">what</span> <span class="n">it</span> <span class="ow">is</span> <span class="p">:)</span>
+<span class="n">show</span> <span class="n">password</span> <span class="ow">is</span> <span class="o">--&gt;</span> <span class="s">'FACEBOOKISEVIL'</span>
+
+</code></pre></div></div>
+<p>–&gt; Now in 3rd step we have to do nothing binary itself generate the flag using correct password</p>
+
+<div class="language-s highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w"> </span><span class="o">~/</span><span class="n">ctf</span><span class="m">-2019</span><span class="o">/</span><span class="n">securinets19</span><span class="o">/</span><span class="n">matrix</span><span class="w"> </span><span class="err"></span><span class="w"> </span><span class="n">.</span><span class="o">/</span><span class="n">rev</span><span class="w"> 
+</span><span class="n">PASSWORD</span><span class="o">:</span><span class="n">FACEBOOKISEVIL</span><span class="w">
+</span><span class="p">[</span><span class="o">+</span><span class="p">]</span><span class="n">GOOD</span><span class="w"> </span><span class="n">JOB</span><span class="w"> </span><span class="o">!</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">submit</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="o">:</span><span class="w">
+</span><span class="m">1337</span><span class="err">_</span><span class="n">FD_DDLLLKMO_KUWRRRVL_HAHAHA</span><span class="w">                                             
+
+</span></code></pre></div></div>
+
+<p><code class="highlighter-rouge">flag : 1337_FD_DDLLLKMO_KUWRRRVL_HAHAHA</code></p>
+</span>
+
+        
+
+        
+        <div class="share">
+          <!-- Go to www.addthis.com/dashboard to customize your tools -->
+          <div class="addthis_sharing_toolbox"></div>
+        </div>
+        
+
+        
+        <div class="tags">
+          <small>
+          <i class="fa fa-tags"></i>
+            Reversing, Securinets-CTF-2019, Matrix of Hell
+          </small>
+        </div>
+        
+
+      </div>
+
+      
+      <div class="content-panel feedback">
+        I <i class="fa fa-heart"></i> feedback.<br />
+        Let me know what you think of this article on twitter <a href="http://www.twitter.com/_dr3dd_">@_dr3dd_</a> or leave a comment below!
+      </div>
+      
+
+      
+      <div class="content-panel comments">
+        <div id="disqus_thread">
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      </div>
+      
+
+      
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script type="text/javascript">
+/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+function disqus_config() { this.experiment.enable_scroll_container = true; }
+var disqus_shortname = "dr3dd"; // required: replace example with your forum shortname
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+
+
+      </section>
+    </div>
+  </div>
+
+   <footer>
+  <a href="http://dr3dd.me">
+    <span>
+        <b>dr3dd</b>
+    </span>
+    
+    <span>© 2020</span>
+  </a>
+</footer>
+
+  
+    <script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-20365477-4', 'auto');
+  ga('send', 'pageview');
+</script>
+  
+</body>
+
+</html>

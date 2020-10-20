@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <meta name="generator" content="Jekyll">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/favicon/site.webmanifest">
+  <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
+
+  <title>Simple Attack On AES-ECB Mode</title>
+
+  <link rel="stylesheet" href="/css/main.css">
+  
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5c03915b806598ee"></script>
+
+  
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" /> <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Simple Attack On AES-ECB Mode | dr3dd</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Simple Attack On AES-ECB Mode" />
+<meta name="author" content="dr3dd" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="PicoCTF-18 (SpyFi ,300 pt)" />
+<meta property="og:description" content="PicoCTF-18 (SpyFi ,300 pt)" />
+<meta property="og:site_name" content="dr3dd" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-10-11T17:01:19+05:30" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","url":"/cryptography/2018/10/11/Simple-Attack-On-AES-ECB-Mode/","headline":"Simple Attack On AES-ECB Mode","dateModified":"2018-10-11T17:01:19+05:30","datePublished":"2018-10-11T17:01:19+05:30","author":{"@type":"Person","name":"dr3dd"},"description":"PicoCTF-18 (SpyFi ,300 pt)","mainEntityOfPage":{"@type":"WebPage","@id":"/cryptography/2018/10/11/Simple-Attack-On-AES-ECB-Mode/"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+  <div id="wrapper">
+    <header>
+  <div>
+    <a href="/">
+    
+    <h1>./dr3dd</h1>
+    </a>
+    <div class="header-links">
+      <h2>Cybersecurity Enthusiast</h2>
+      <a href="/archive"><h2 class="header-link">Blogs</h2></a>
+<a href="/about"><h2 class="header-link">About</h2></a>
+<a href="/favicon/resume.pdf"><h2 class="header-link">Resume</h2></a>
+<!-- <a href="/atom.xml"><h2 class="header-link">RSS</h2></a> -->
+    </div>
+  </div>
+</header>
+    <div class="container">
+      <section id="main_content">
+        
+
+<div class="container-fluid single">
+  <div class="row">
+
+    <div itemscope itemtype="http://schema.org/Article" class="col-md-12 article">
+      
+      <div class="thumb">
+        <i class="fa fa-book fa-4x"></i>
+      </div>
+      
+
+      <h1 class="header" itemprop="name">Simple Attack On AES-ECB Mode</h1>
+
+      <div class="author">
+        <small><i>
+          
+          by
+          <span itemprop="author">
+            
+              <a rel="author" href="https://plus.google.com/u/0/115811810791350463594">
+            
+            <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+              <span itemprop="name">dr3dd</span>
+            </span>
+            
+              </a>
+            
+          </span>
+          
+          on <span itemprop="datePublished" content="2014-08-28">October 11, 2018</span>
+           under Cryptography
+        </i></small>
+      </div>
+
+      <div class="read-time">
+        <small>
+          9 minute read
+        </small>
+      </div>
+
+      <div class="content-panel content">
+
+        
+
+        <span itemprop="articleBody"><h2>PicoCTF-18 (SpyFi ,300 pt)</h2>
+
+<p>In this challange they use <strong>AES-ECB</strong> mode which we know it is quite vulnerable.</p>
+
+<p>If you dont know how <strong>AES-ECB</strong> works i would suggest to read about first.
+<a href="https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_(ECB)">AES-ECB</a></p>
+
+<p><strong>AES-ECB Encryption and Decryption flow chart</strong></p>
+
+<p><img src="/favicon/601px-ECB_encryption.svg.jpg" alt="alt text" /></p>
+
+<p><img src="/favicon/601px-ECB_decryption.svg.jpg" alt="alt text" /></p>
+
+<p><strong>Now come to the challange</strong></p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/python2 -u
+</span><span class="kn">from</span> <span class="nn">Crypto.Cipher</span> <span class="kn">import</span> <span class="n">AES</span>
+
+<span class="n">agent_code</span> <span class="o">=</span> <span class="s">"""flag"""</span>
+
+<span class="k">def</span> <span class="nf">pad</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">%</span> <span class="mi">16</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="s">'0'</span><span class="o">*</span><span class="p">(</span><span class="mi">16</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">%</span><span class="mi">16</span> <span class="p">)</span>    <span class="c1">#block-size = 16
+</span>    <span class="k">return</span> <span class="n">message</span>
+
+<span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">plain</span><span class="p">):</span>
+    <span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span> <span class="n">key</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'hex'</span><span class="p">),</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_ECB</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">cipher</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">plain</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'hex'</span><span class="p">)</span>
+
+<span class="n">welcome</span> <span class="o">=</span> <span class="s">"Welcome, Agent 006!"</span>
+<span class="k">print</span> <span class="n">welcome</span>
+
+<span class="n">sitrep</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s">"Please enter your situation report: "</span><span class="p">)</span>
+<span class="n">message</span> <span class="o">=</span> <span class="s">'''Agent,
+Greetings. My situation report is as follows:
+{0}                                                     #here is our input message
+My agent identifying code is: {1}.                      #flag
+Down with the Soviets,
+006'''</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">sitrep</span><span class="p">,</span><span class="n">agent_code</span><span class="p">)</span>
+
+<span class="n">message</span> <span class="o">=</span> <span class="n">pad</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">encrypt</span><span class="p">(</span> <span class="s">"""key"""</span><span class="p">,</span> <span class="n">message</span> <span class="p">)</span>
+</code></pre></div></div>
+
+<p>lets send input message :
+<code class="highlighter-rouge">AAAAAAAAAAA + BBBBBBBBBBBBBBBB + CCCCCCCCCCCCCCCC  &lt;--   'A'x11 (offset) + 'B'x16 + 'C'x16</code></p>
+
+<p>suppose flag is : <code class="highlighter-rouge">picoCTF{ABCDEFG}</code></p>
+
+<p><strong>Divide message in blocks of 16</strong></p>
+
+<div class="language-s highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">   </span><span class="s1">'Agent,\nGreetings'</span><span class="w"> </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'. My situation r'</span><span class="w">  </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'eport is as foll'</span><span class="w">  </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">3</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'ows:\nAAAAAAAAAAA'</span><span class="w"> </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">4</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'BBBBBBBBBBBBBBBB'</span><span class="w">  </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">5</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'CCCCCCCCCCCCCCCC'</span><span class="w">  </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">6</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'\nMy agent identi'</span><span class="w"> </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">7</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'fying code is:  '</span><span class="w">  </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">8</span><span class="p">)</span><span class="w">  </span><span class="o">&lt;---</span><span class="n">known</span><span class="w"> </span><span class="n">Block</span><span class="w">
+   </span><span class="s1">'picoCTF{ABCDEFG}'</span><span class="w">  </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">9</span><span class="p">)</span><span class="w">  </span><span class="o">&lt;---</span><span class="n">unknown</span><span class="w"> </span><span class="n">Block</span><span class="w">
+   </span><span class="s1">'.Down with the S'</span><span class="w">  </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">10</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;---</span><span class="n">known</span><span class="w"> </span><span class="n">Block</span><span class="w">
+</span></code></pre></div></div>
+<p>Now if we send input with one less ‘C’ then blocks is:</p>
+
+<div class="language-s highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">   </span><span class="s1">'Agent,\nGreetings'</span><span class="w">   </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'. My situation r'</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'eport is as foll'</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">3</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'ows:\nAAAAAAAAAAA'</span><span class="w">   </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">4</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'BBBBBBBBBBBBBBBB'</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">5</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'CCCCCCCCCCCCCCC\n'</span><span class="w">   </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">6</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'My agent identif'</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">7</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'ying code is:  p'</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">8</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;---</span><span class="n">here</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">our</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">byte</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="n">dont</span><span class="w"> </span><span class="n">know</span><span class="w"> </span><span class="n">what</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">it.</span><span class="w">
+   </span><span class="s1">'icoCTF{ABCDEFG}.'</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">9</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;---</span><span class="n">unknown</span><span class="w"> </span><span class="n">block</span><span class="w"> 
+   </span><span class="s1">'Down with the So'</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">10</span><span class="p">)</span><span class="o">&lt;---</span><span class="n">known</span><span class="w"> </span><span class="n">Block</span><span class="w">
+</span></code></pre></div></div>
+
+<p><strong>Now we know the encryption of block 8 in which last byte is our flag’s first byte, to know what byte is we send input like this</strong></p>
+
+<div class="language-s highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">   </span><span class="s1">'Agent,\nGreetings'</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'. My situation r'</span><span class="w">     </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'eport is as foll'</span><span class="w">     </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">3</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'ows:\nAAAAAAAAAAA'</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">4</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'ying code is:  %s'</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">5</span><span class="p">)</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nf">range</span><span class="p">(</span><span class="m">32</span><span class="p">,</span><span class="m">128</span><span class="p">)</span><span class="w">   
+   </span><span class="s1">'CCCCCCCCCCCCCCC\n'</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">6</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'My agent identif'</span><span class="w">     </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">7</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'ying code is:  p'</span><span class="w">     </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">8</span><span class="p">)</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="n">Now</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="n">know</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">our</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">byte</span><span class="w"> </span><span class="n">flag</span><span class="w">
+   </span><span class="s1">'icoCTF{ABCDEFG}.'</span><span class="w">     </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">9</span><span class="p">)</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="n">unknown</span><span class="w"> </span><span class="n">block</span><span class="w"> 
+   </span><span class="s1">'Down with the So'</span><span class="w">     </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">10</span><span class="p">)</span><span class="w">   </span><span class="o">&lt;---</span><span class="n">known</span><span class="w"> </span><span class="n">Block</span><span class="w">
+</span></code></pre></div></div>
+
+<p><strong>What we have to do is to check the encryption of block 5 and block 8 over the loop if it is same means the char we send is our first char of flag!! Whooho…!! we just get the 1st byte of unknown block without knowing key, lets repeat again same method with 2 ‘C’ less.</strong></p>
+
+<p>after 1st loop we know flag starting with  : “p”</p>
+
+<p><strong>Now for second byte send input like this</strong></p>
+
+<div class="language-s highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">   </span><span class="s1">'Agent,\nGreetings'</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'. My situation r'</span><span class="w">     </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'eport is as foll'</span><span class="w">     </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">3</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'ows:\nAAAAAAAAAAA'</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">4</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'ing code is: p%s'</span><span class="w">     </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">5</span><span class="p">)</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="o">%</span><span class="n">s</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nf">range</span><span class="p">(</span><span class="m">32</span><span class="p">,</span><span class="m">128</span><span class="p">)</span><span class="w">   
+   </span><span class="s1">'CCCCCCCCCCCCCC\nM'</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">6</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'y agent identify'</span><span class="w">     </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">7</span><span class="p">)</span><span class="w">
+   </span><span class="s1">'ing code is:  pi'</span><span class="w">     </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">8</span><span class="p">)</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="n">Now</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="n">know</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">our</span><span class="w"> </span><span class="n">two</span><span class="w"> </span><span class="n">byte</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">which</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="n">know</span><span class="w"> </span><span class="n">i.e</span><span class="w"> </span><span class="s2">"p"</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">other</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="n">have</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">find</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">second</span><span class="w"> </span><span class="n">loop.</span><span class="w">
+   </span><span class="s1">'coCTF{ABCDEFG}.D'</span><span class="w">     </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">9</span><span class="p">)</span><span class="w">    </span><span class="o">&lt;---</span><span class="w"> </span><span class="n">unknown</span><span class="w"> </span><span class="n">block</span><span class="w"> 
+   </span><span class="s1">'own with the Sov'</span><span class="w">     </span><span class="o">&lt;---</span><span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="p">(</span><span class="n">Block</span><span class="w"> </span><span class="m">10</span><span class="p">)</span><span class="w">   </span><span class="o">&lt;---</span><span class="w"> </span><span class="n">known</span><span class="w"> </span><span class="n">Block</span><span class="w">
+</span></code></pre></div></div>
+
+<p><strong>Repeat process again check encryption of block 5 and block 8 if it same means the second char we send is our flag’s second char..!!</strong></p>
+
+<p>after 2nd loop we know flag starting with : “pi”</p>
+
+<p><strong>Same process we have to do until we get full flag!!!</strong></p>
+
+<p><strong>My Script for this challenge</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/python2 -u
+</span>
+<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span> 
+<span class="n">flag</span> <span class="o">=</span> <span class="s">"picoCTF{"</span>
+
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">14</span><span class="p">):</span>
+   <span class="k">print</span><span class="p">(</span><span class="s">"................................................."</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
+   <span class="n">p</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="s">'2018shell1.picoctf.com'</span><span class="p">,</span> <span class="mi">37131</span><span class="p">)</span>
+   <span class="n">p</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">'Please enter your situation report: '</span><span class="p">)</span>
+   <span class="n">my_msg</span> <span class="o">=</span> <span class="s">"A"</span><span class="o">*</span><span class="mi">11</span><span class="o">+</span><span class="s">"B"</span><span class="o">*</span><span class="p">(</span><span class="mi">25</span><span class="o">-</span><span class="n">j</span><span class="p">)</span>
+   <span class="n">p</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">my_msg</span><span class="p">)</span>
+   <span class="n">enc_msg</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'hex'</span><span class="p">)</span>
+   <span class="n">p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="mi">128</span><span class="p">):</span>
+      <span class="n">q</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="s">'2018shell1.picoctf.com'</span><span class="p">,</span> <span class="mi">37131</span><span class="p">)</span>
+      <span class="n">q</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">'Please enter your situation report: '</span><span class="p">)</span>
+      <span class="n">msg</span> <span class="o">=</span> <span class="s">"A"</span><span class="o">*</span><span class="mi">11</span><span class="o">+</span><span class="s">"B"</span><span class="o">*</span><span class="p">(</span><span class="mi">14</span><span class="o">-</span><span class="n">j</span><span class="p">)</span> <span class="o">+</span> <span class="n">flag</span> <span class="o">+</span> <span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+      <span class="n">q</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+      <span class="n">y</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'hex'</span><span class="p">)</span>
+      <span class="n">q</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+      <span class="k">if</span> <span class="n">y</span><span class="p">[</span><span class="mi">80</span><span class="p">:</span><span class="mi">96</span><span class="p">]</span> <span class="o">==</span> <span class="n">enc_msg</span><span class="p">[</span><span class="mi">128</span><span class="p">:</span><span class="mi">144</span><span class="p">]:</span>
+            <span class="n">flag</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">break</span>
+<span class="k">print</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+
+            <span class="c1">#picoCTF{@g3nt6_1$_th3_c00l3$t_2432504}
+</span>         
+</code></pre></div></div>
+</span>
+
+        
+
+        
+        <div class="share">
+          <!-- Go to www.addthis.com/dashboard to customize your tools -->
+          <div class="addthis_sharing_toolbox"></div>
+        </div>
+        
+
+        
+        <div class="tags">
+          <small>
+          <i class="fa fa-tags"></i>
+            Crypto, PicoCTF-18, SpyFi, AES-ECB
+          </small>
+        </div>
+        
+
+      </div>
+
+      
+      <div class="content-panel feedback">
+        I <i class="fa fa-heart"></i> feedback.<br />
+        Let me know what you think of this article on twitter <a href="http://www.twitter.com/_dr3dd_">@_dr3dd_</a> or leave a comment below!
+      </div>
+      
+
+      
+      <div class="content-panel comments">
+        <div id="disqus_thread">
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      </div>
+      
+
+      
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script type="text/javascript">
+/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+function disqus_config() { this.experiment.enable_scroll_container = true; }
+var disqus_shortname = "dr3dd"; // required: replace example with your forum shortname
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+
+
+      </section>
+    </div>
+  </div>
+
+   <footer>
+  <a href="http://dr3dd.me">
+    <span>
+        <b>dr3dd</b>
+    </span>
+    
+    <span>© 2020</span>
+  </a>
+</footer>
+
+  
+    <script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-20365477-4', 'auto');
+  ga('send', 'pageview');
+</script>
+  
+</body>
+
+</html>
