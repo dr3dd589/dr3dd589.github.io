@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build the site in the jekyll/builder container
+    - name: Deploy Jekyll Site
       uses: dr3dd589/dr3dd589.github.io@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
