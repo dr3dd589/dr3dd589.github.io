@@ -14,7 +14,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the site in the jekyll/builder container
-      run: |
-        docker run \
-        -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-        jekyll/builder:latest /bin/bash -c "gem -v && ruby -v && gem install jekyll bundler && bundle update && bundle install && chmod 777 /srv/jekyll && bundle exec jekyll build"
+      uses: dr3dd589/dr3dd589.github.io@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
+        GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
