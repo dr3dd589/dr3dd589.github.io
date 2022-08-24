@@ -96,6 +96,6 @@ I have hosted it on `http://www.hackerearth.com.dr3dd.live/cores.html` first but
 
 ### 2. Open Redirect 
 
-This one is pretty simple bug. for open redirect go to :
+This one is pretty simple bug.
 
 `https://www.hackerearth.com/social-login-complete-page/?redirect=https://evil.com`
