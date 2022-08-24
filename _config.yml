@@ -2,8 +2,8 @@ title: dr3dd
 description: "my-blog"
 author:
   name: "dr3dd"
-  email: "saurabh.dakshana17@gmail.com"
-  url: "https://dr3dd.live"
+  email: "dr3dd.ctf@gmail.com"
+  url: "https://dr3dd.xyz"
 
 baseurl: /
 
@@ -14,7 +14,7 @@ paginate: 3
 paginate_path: /page/:num/
 google_analytics: "UA-20365477-4"
 title_image: "/favicon/22555735_1496953163733036_1185247250740939628_o.jpg"
-title_description: "Software and Network Security Enthusiast"
+title_description: "Security Engineer"
 twitter_username: _dr3dd_
 github_username:  dr3dd589
 instagram_username: _dr3dd_
