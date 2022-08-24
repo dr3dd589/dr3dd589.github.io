@@ -1,8 +1,8 @@
 ---
 title:      Stealing secrets tokens and all private info of hackerearth users  
-date:       2020-07-10 11:31:19
+date:       2020-08-30 11:31:19
 author:     dr3dd
-summary:    Stealing secrets tokens of hackerearth account 
+summary:    Stealing secrets tokens of hackerearth users account 
 categories: Bug-Bounty
 thumbnail:  book
 tags:
@@ -11,26 +11,26 @@ tags:
 
 Hi all,
 
-I found two bugs in hackerearth. one of them is fixed and other is still not fixed.
+I found two bugs in hackerearth. Got T-shirt as swag.
 
-### 1. cores misconfiguration (fixed)
+### 1. cores misconfiguration
 
-When i change the origin header in request to `https://www.hackerearth.com.evil.com` the responce i got is:
+When i change the origin header in request to `https://www.hackerearth.com.evil.com` the responce i got was:
 
 ```python
 Access-Control-Allow-Credentials: true
 Access-Control-Allow-Origin: https://www.hackerearth.com.evil.com
 ```
 
-I backend regex onlly check for `www.hackerearth.com` after `https://`. So i made a subdomain of my site `www.hackerearth.com.dr3dd.live` after passing this domain
-in request i got the response is:
+The backend regex only checks for `www.hackerearth.com` after `https://`. So i made a subdomain of `www.hackerearth.com.dr3dd.live`. After sending this subdomain in request as origin header i got below response: 
 
 ```python
 Access-Control-Allow-Credentials: true
 Access-Control-Allow-Origin: https://www.hackerearth.com.dr3dd.live
 ```
 
-We can see `Access-Control-Allow-Credentials: true` for `www.hackerearth.com.dr3dd.live`. So i wrote a small js script to steal secrets tokens of victim.
+As we can see `Access-Control-Allow-Credentials: true` for `www.hackerearth.com.dr3dd.live`. Yesss!! 
+So i wrote a small js script to steal secrets tokens of victim account.
 
 ```html
 <!DOCTYPE html>
