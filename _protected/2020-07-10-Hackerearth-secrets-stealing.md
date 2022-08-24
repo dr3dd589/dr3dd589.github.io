@@ -1,5 +1,5 @@
 ---
-title:      Stealing secrets tokens and all private info of victim hackerearth account 
+title:      Stealing secrets tokens and all private info of hackerearth users  
 date:       2020-07-10 11:31:19
 author:     dr3dd
 summary:    Stealing secrets tokens of hackerearth account 
