@@ -95,28 +95,8 @@ function get_csrf_token(){
 I have hosted it on `http://www.hackerearth.com.dr3dd.live/cores.html` first button steal secrets token and second one steal csrf tokens of victim.
 
 
-### 2. XSS + Open Redirect (not fixed)
+### 2. Open Redirect 
 
 This one is pretty simple bug. for open redirect go to :
 
 `https://www.hackerearth.com/social-login-complete-page/?redirect=https://evil.com`
-
-to access cookie we can use :
-
-`https://www.hackerearth.com/social-login-complete-page/?redirect=javascript:alert(document.cookie)`
-
-
-Here is video POC link of both bugs :
-
-[POC Drive Link](https://drive.google.com/drive/folders/1TrOvBYbtEp0gDGq2A7npSNd8_5ok8ccn?usp=sharing)
-
-
-### Timeline
-
-1. `March-16-2020`  Submit report to hackerearth via mail
-2. `March-18-2020`  Submit Detail POC for bugs
-3. `March-27-2020`  1st bug Core misconfiguration is fixed but there is no response from the security team.
-4. `April-18-2020`  Asked for update but they said they still working on fix.
-5. `Aug-09-2020`    Asked for update but they said they still working on fix.
-6. `Aug-24-2020`    Asked for update but they said they still working on fix.
-7. `Present`        Still not responding.
