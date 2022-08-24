@@ -14,4 +14,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deploy
-      run: "ruby -v && gem install jekyll bundler && bundle exec jekyll build -d _site/"
+      run: "ruby -v && sudo gem install jekyll bundler && bundle exec jekyll build -d _site/"
