@@ -1,0 +1,9 @@
+{
+    "url": "https://dr3dd589.github.io/ctf/test.yaml",
+    "urls": [
+        {
+            "url": "https://dr3dd589.github.io/ctf/test.yaml",
+            "name": "XSS"
+        }
+    ]
+}
