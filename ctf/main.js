@@ -119,7 +119,7 @@
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                window.location = his.getResponseHeader("Location");
+                window.location = this.getResponseHeader("Location");
             }
         };
         xhttp.open("POST", "/save", true);
