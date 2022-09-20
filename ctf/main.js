@@ -117,12 +117,12 @@
     // Add click event to reset button
     el("#submit").onclick = function() {
         var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4) {
-                // Typical action to be performed when the document is ready:
-                window.location = this.responseURL;
-            }
-        };
+//         xhttp.onreadystatechange = function() {
+//             if (this.readyState == 4) {
+//                 // Typical action to be performed when the document is ready:
+//                 window.location = this.responseURL;
+//             }
+//         };
         xhttp.open("POST", "/save", true);
         xhttp.send(url.search);
     };
