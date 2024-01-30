@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+  <div>
+    <button type="button" onclick="loadUsers()">Get Users!!!</button>
+    <div id="demo1"></div>
+  </div>
+
+  <script>
+    function loadUsers() {
+      var xhttp = new XMLHttpRequest();
+
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4) {
+          if (this.status == 200) {
+            // Display the raw JSON response in the "demo1" div
+            document.getElementById("demo1").innerText = this.responseText;
+          } else {
+            // Handle errors here, for example:
+            document.getElementById("demo1").innerText = "Error: " + this.status;
+          }
+        }
+      };
+
+      xhttp.open("GET", "https://10.48.19.9:9440/PrismGateway/services/rest/v1/users", true);
+      xhttp.withCredentials = true;
+      xhttp.send();
+    }
+  </script>
+
+</body>
+
+</html>
